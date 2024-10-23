@@ -18,7 +18,7 @@
 Install via Composer:
 
 ```bash
-composer require 53ny4/ogimage
+composer require 53ny4/og-image
 ```
 
 Ensure you have the [Imagine](https://github.com/php-imagine/Imagine) library installed, as it's required for image manipulation:

@@ -1,6 +1,6 @@
 {
     "name": "53ny4/og-image",
-    "description": "Generate OG Image",
+    "description": "Simple PHP class that generates Open Graph (OG) images dynamically using the Imagine library for image manipulation.",
     "type": "library",
     "license": "MIT",
     "autoload": {
