@@ -1,0 +1,21 @@
+{
+    "name": "53ny4/og-image",
+    "description": "Generate OG Image",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "s3ny4\\OgImage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "53ny4"
+        }
+    ],
+    "minimum-stability": "stable",
+    "version": "0.1.0",
+    "require": {
+        "imagine/imagine": "^1.3"
+    }
+}
