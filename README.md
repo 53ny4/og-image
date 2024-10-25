@@ -13,6 +13,11 @@
 ## Example image
 ![Example Image](docs/images/example.png)
 
+![Example Image](docs/images/text_position.png)
+
+![Example Image](docs/images/no_bg.png)
+
+![Example Image](docs/images/text_bg.png)
 ## Installation
 
 Install via Composer:
@@ -37,13 +42,18 @@ use s3ny4\OgImage\OgImage;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $ogImage = new OgImage();
-$ogImage->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed fringilla leo.')
-    ->setTextColor('#FFFFFF')
-    ->setTextBackgroundColor('#000000')
-    ->setBackground('', __DIR__ . '/src/assets/images/img.png')
-    ->generate()
-    ->show('png');
-```
+$ogImage->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed fringilla leo.') # Set the text to be overlaid on the image
+    ->setTextColor('#FFFFFF') # Set the color of the overlay text
+    ->setTextBackgroundColor('#000000') # Set the background color behind the text
+    ->setBackground('', __DIR__ . '/assets/images/background.jpg') # Set the background of the image, either as a color or from an image path
+    # OR
+    # ->setBackground('#000000') # Set the background of the image, either as a color or from an image path
+    ->setFontSize(20) # Set the font size of the overlay text
+    ->setTextPosition(['x' => 0, 'y' => -150]) # Set the position of the overlay text
+    ->setFontPath(__DIR__ . '/assets/fonts/Roboto-Regular.ttf') # Set the font path for the text overlay
+    ->generate() # Generate the final image
+    ->show('png'); # Show the final image in the browser
+``` 
 
 
 ### Methods
@@ -56,6 +66,8 @@ $ogImage->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maur
 - `setHeight(int $height)`: Sets the height of the image.
 - `generate()`: Generates the final image and returns it as an `ImageInterface` then it can be saved `->save()` or shown `->show()`.
 - `setFontPath(string $fontPath)`: Sets the font path for the text overlay.
+- `setFontSize(int $fontSize)`: Sets the font size of the overlay text.
+- `setTextPosition(array $position)`: Sets the position of the overlay text.
 
 ## License
 
