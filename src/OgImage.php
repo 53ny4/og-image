@@ -216,4 +216,10 @@ class OgImage
         $this->fontPath = $fontPath;
         return $this;
     }
+
+    public function setFontSize(int $fontSize): OgImage
+    {
+        $this->fontSize = $fontSize;
+        return $this;
+    }
 }
