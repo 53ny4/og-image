@@ -21,8 +21,15 @@ class OgImage
     protected string $textBackgroundColor = '';
     protected string $fontPath = __DIR__ . '/assets/fonts/BebasNeue-Regular.ttf';
     protected int $fontSize = 48;
-
     protected array $textPosition = ['x' => 0, 'y' => 0];
+
+
+    protected array $watermark = [
+        'path' => '',
+        'position' => ['x' => 0, 'y' => 0],
+        'opacity' => 100
+    ];
+
 
     /**
      * The constructor initializes an instance of the Imagine class.
@@ -158,6 +165,27 @@ class OgImage
         }
     }
 
+private function addWatermark(ImageInterface $image): void
+{
+    // Open the watermark image and get its size
+    $watermark = $this->imagine->open($this->watermark['path']);
+    $watermarkSize = $watermark->getSize();
+
+    // Calculate the scaling factor to resize the watermark to 150px width
+    $scale = 150 / $watermarkSize->getWidth();
+
+    // Resize the watermark proportionally
+    $newWatermarkSize = $watermarkSize->scale($scale);
+    $watermark->resize($newWatermarkSize);
+
+    // Calculate the position to place the watermark in the bottom left corner
+    $watermarkX = $this->watermark['position']['x'];
+    $watermarkY = $this->watermark['position']['y'];
+
+    // Paste the watermark onto the image
+    $image->paste($watermark, new Point($watermarkX, $watermarkY), $this->watermark['opacity']);
+}
+
 
     /**
      * Helper method breaks the input text into multiple lines, ensuring that each line fits within the maximum width.
@@ -233,9 +261,20 @@ class OgImage
     public function generate(): ImageInterface
     {
         $image = $this->createBackground();
-        $overlayY = $image->getSize()->getHeight() - 250;
+
+        if(!empty($this->watermark['path'])) {
+            $this->addWatermark($image);
+        }
+
+        $overlayY = $image->getSize()->getHeight();
         $this->addOverlayText($image, $this->text, 150, $overlayY, 20, 20, 15, 15);
         return $image;
+    }
+
+    public function setWatermark(array $watermark): OgImage
+    {
+        $this->watermark = $watermark;
+        return $this;
     }
 
 

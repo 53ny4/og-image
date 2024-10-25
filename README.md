@@ -1,4 +1,4 @@
-# OgImage v0.2.0
+# OgImage v0.3.0
 
 `OgImage` is a simple PHP class that generates Open Graph (OG) images dynamically using the Imagine library for image manipulation. It allows for customizing background colors or images, adding overlay text with adjustable styles, and setting various image dimensions.
 
@@ -10,6 +10,7 @@
 - **Flexible image size**: Customize the image width and height to suit your needs.
 - **Text position**: Set the position of the overlay text on the image.
 - **Font size**: Set the font size of the overlay text.
+- ** Watermark**: Add a watermark to the image with a custom position and opacity.
 
 
 ## Example image
@@ -20,6 +21,8 @@
 ![Example Image](docs/images/no_bg.png)
 
 ![Example Image](docs/images/text_bg.png)
+
+![Example Image](docs/images/watermark.png)
 ## Installation
 
 Install via Composer:
@@ -53,6 +56,11 @@ $ogImage->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maur
     ->setFontSize(20) # Set the font size of the overlay text
     ->setTextPosition(['x' => 0, 'y' => -150]) # Set the position of the overlay text
     ->setFontPath(__DIR__ . '/assets/fonts/Roboto-Regular.ttf') # Set the font path for the text overlay
+    ->setWatermark([
+        'path' => __DIR__ . '/assets/images/github_logo.png', # Path to the watermark image
+        'position' => ['x' => 1050, 'y' => 520], # Position of the watermark image
+        'opacity' => 60 # Opacity of the watermark image
+    ])
     ->generate() # Generate the final image
     ->show('png'); # Show the final image in the browser
 ``` 
