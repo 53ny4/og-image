@@ -18,7 +18,7 @@ class OgImage
     protected string $imageBackgroundPath = '';
     protected string $text = 'Hello, World!';
     protected string $textColor = '#000000';
-    protected string $textBackgroundColor = '#000000';
+    protected string $textBackgroundColor = '';
     protected string $fontPath = __DIR__ . '/assets/fonts/BebasNeue-Regular.ttf';
     protected int $fontSize = 48;
 
@@ -140,8 +140,11 @@ class OgImage
     ): void {
         $overlayWidth = $image->getSize()->getWidth();
         $palette = new RGB();
-        $backgroundColor = $palette->color($this->textBackgroundColor, 60);
-        $image->draw()->rectangle(new Point(0, $overlayY), new Point($overlayWidth, $overlayY + $overlayHeight), $backgroundColor, true);
+        if(!empty($this->textBackgroundColor)){
+            $backgroundColor = $palette->color($this->textBackgroundColor, 60);
+            $image->draw()->rectangle(new Point(0, $overlayY), new Point($overlayWidth, $overlayY + $overlayHeight), $backgroundColor, true);
+        }
+
 
         $font = $this->imagine->font($this->fontPath, $this->fontSize, $palette->color($this->textColor));
         $maxTextWidth = $overlayWidth - $paddingLeft - $paddingRight;
