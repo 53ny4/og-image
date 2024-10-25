@@ -22,12 +22,170 @@ class OgImage
     protected string $fontPath = __DIR__ . '/assets/fonts/BebasNeue-Regular.ttf';
     protected int $fontSize = 48;
 
+    protected array $textPosition = ['x' => 0, 'y' => 0];
+
     /**
      * The constructor initializes an instance of the Imagine class.
      */
     public function __construct()
     {
         $this->imagine = new Imagine();
+    }
+
+
+    /**
+     * @param string $text
+     * @return $this
+     */
+    public function setText(string $text): self
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * @param string $textColor
+     * @return $this
+     */
+    public function setTextColor(string $textColor): self
+    {
+        $this->textColor = $textColor;
+        return $this;
+    }
+
+
+    /**
+     * @param string $color
+     * @param string $image
+     * @return $this
+     */
+    public function setBackground(string $color = '', string $image = ''): self
+    {
+        $this->background = $color;
+        $this->imageBackgroundPath = $image;
+        return $this;
+    }
+
+    public function setTextBackgroundColor(string $textBackgroundColor): OgImage
+    {
+        $this->textBackgroundColor = $textBackgroundColor;
+        return $this;
+    }
+
+    public function setWidth(int $width): OgImage
+    {
+        $this->width = $width;
+        return $this;
+    }
+
+    public function setHeight(int $height): OgImage
+    {
+        $this->height = $height;
+        return $this;
+    }
+
+    public function setFontPath(string $fontPath): OgImage
+    {
+        $this->fontPath = $fontPath;
+        return $this;
+    }
+
+    public function setFontSize(int $fontSize): OgImage
+    {
+        $this->fontSize = $fontSize;
+        return $this;
+    }
+
+    public function setTextPosition(array $textPosition): OgImage
+    {
+        $this->textPosition = $textPosition;
+        return $this;
+    }
+
+
+    /**
+     * This method draws a text overlay box onto the image. It calculates the available space based on the padding values and attempts to fit the text inside.
+     * It dynamically adjusts the font size if the text exceeds the allowed area.
+     * The text is drawn centered horizontally.
+     *
+     * @param ImageInterface $image
+     * @param string $text
+     * @param int $overlayHeight
+     * @param int $overlayY
+     * @param int $paddingLeft
+     * @param int $paddingRight
+     * @param int $paddingTop
+     * @param int $paddingBottom
+     * @return void
+     */
+    private function addOverlayText(
+        ImageInterface $image,
+        string         $text,
+        int            $overlayHeight,
+        int            $overlayY,
+        int            $paddingLeft = 10,
+        int            $paddingRight = 10,
+        int            $paddingTop = 10,
+        int            $paddingBottom = 10
+    ): void
+    {
+        $overlayWidth = $image->getSize()->getWidth();
+        $palette = new RGB();
+        if (!empty($this->textBackgroundColor)) {
+            $backgroundColor = $palette->color($this->textBackgroundColor, 60);
+            $image->draw()->rectangle(new Point(0 + $this->textPosition['x'], $overlayY + $this->textPosition['y']), new Point($overlayWidth + $this->textPosition['x'], $overlayY + $overlayHeight + $this->textPosition['y']), $backgroundColor, true);
+        }
+
+
+        $font = $this->imagine->font($this->fontPath, $this->fontSize, $palette->color($this->textColor));
+        $maxTextWidth = $overlayWidth - $paddingLeft - $paddingRight;
+        $maxTextHeight = $overlayHeight - $paddingTop - $paddingBottom;
+
+        do {
+            $lines = $this->wrapTextToOverlay($font, $text, $maxTextWidth);
+            $lineHeight = $this->fontSize * 1.2;
+            $totalTextHeight = count($lines) * $lineHeight;
+            if ($totalTextHeight <= $maxTextHeight) break;
+            $this->fontSize -= 2;
+            $font = $this->imagine->font($this->fontPath, $this->fontSize, $palette->color($this->textColor));
+        } while ($this->fontSize >= 10);
+
+        $textY = $overlayY + ($overlayHeight - $totalTextHeight) / 2;
+        foreach ($lines as $line) {
+            $lineX = $overlayWidth / 2 - $font->box($line)->getWidth() / 2;
+            $image->draw()->text($line, $font, new Point($lineX + $this->textPosition['x'], $textY + $this->textPosition['y']));
+            $textY += $lineHeight;
+        }
+    }
+
+
+    /**
+     * Helper method breaks the input text into multiple lines, ensuring that each line fits within the maximum width.
+     * It adds words to the current line until the line's width exceeds the maximum width, then starts a new line.
+     *
+     * @param FontInterface $font
+     * @param string $text
+     * @param float $maxWidth
+     * @return array
+     */
+    private function wrapTextToOverlay(FontInterface $font, string $text, float $maxWidth): array
+    {
+        $words = explode(' ', $text);
+        $lines = [];
+        $currentLine = '';
+
+        foreach ($words as $word) {
+            $lineWithWord = $currentLine ? $currentLine . ' ' . $word : $word;
+            if ($font->box($lineWithWord)->getWidth() <= $maxWidth) {
+                $currentLine = $lineWithWord;
+            } else {
+                if ($currentLine) $lines[] = $currentLine;
+                $currentLine = $word;
+            }
+        }
+
+        if ($currentLine) $lines[] = $currentLine;
+        return $lines;
     }
 
     /**
@@ -80,149 +238,5 @@ class OgImage
         return $image;
     }
 
-    /**
-     * @param string $text
-     * @return $this
-     */
-    public function setText(string $text): self
-    {
-        $this->text = $text;
-        return $this;
-    }
 
-    /**
-     * @param string $textColor
-     * @return $this
-     */
-    public function setTextColor(string $textColor): self
-    {
-        $this->textColor = $textColor;
-        return $this;
-    }
-
-
-    /**
-     * @param string $color
-     * @param string $image
-     * @return $this
-     */
-    public function setBackground(string $color = '', string $image = ''): self
-    {
-        $this->background = $color;
-        $this->imageBackgroundPath = $image;
-        return $this;
-    }
-
-    /**
-     * This method draws a text overlay box onto the image. It calculates the available space based on the padding values and attempts to fit the text inside.
-     * It dynamically adjusts the font size if the text exceeds the allowed area.
-     * The text is drawn centered horizontally.
-     *
-     * @param ImageInterface $image
-     * @param string $text
-     * @param int $overlayHeight
-     * @param int $overlayY
-     * @param int $paddingLeft
-     * @param int $paddingRight
-     * @param int $paddingTop
-     * @param int $paddingBottom
-     * @return void
-     */
-    private function addOverlayText(
-        ImageInterface $image,
-        string $text,
-        int $overlayHeight,
-        int $overlayY,
-        int $paddingLeft = 10,
-        int $paddingRight = 10,
-        int $paddingTop = 10,
-        int $paddingBottom = 10
-    ): void {
-        $overlayWidth = $image->getSize()->getWidth();
-        $palette = new RGB();
-        if(!empty($this->textBackgroundColor)){
-            $backgroundColor = $palette->color($this->textBackgroundColor, 60);
-            $image->draw()->rectangle(new Point(0, $overlayY), new Point($overlayWidth, $overlayY + $overlayHeight), $backgroundColor, true);
-        }
-
-
-        $font = $this->imagine->font($this->fontPath, $this->fontSize, $palette->color($this->textColor));
-        $maxTextWidth = $overlayWidth - $paddingLeft - $paddingRight;
-        $maxTextHeight = $overlayHeight - $paddingTop - $paddingBottom;
-
-        do {
-            $lines = $this->wrapTextToOverlay($font, $text, $maxTextWidth);
-            $lineHeight = $this->fontSize * 1.2;
-            $totalTextHeight = count($lines) * $lineHeight;
-            if ($totalTextHeight <= $maxTextHeight) break;
-            $this->fontSize -= 2;
-            $font = $this->imagine->font($this->fontPath, $this->fontSize, $palette->color($this->textColor));
-        } while ($this->fontSize >= 10);
-
-        $textY = $overlayY + ($overlayHeight - $totalTextHeight) / 2;
-        foreach ($lines as $line) {
-            $lineX = $overlayWidth / 2 - $font->box($line)->getWidth() / 2;
-            $image->draw()->text($line, $font, new Point($lineX, $textY));
-            $textY += $lineHeight;
-        }
-    }
-
-    /**
-     * Helper method breaks the input text into multiple lines, ensuring that each line fits within the maximum width.
-     * It adds words to the current line until the line's width exceeds the maximum width, then starts a new line.
-     *
-     * @param FontInterface $font
-     * @param string $text
-     * @param float $maxWidth
-     * @return array
-     */
-    private function wrapTextToOverlay(FontInterface $font, string $text, float $maxWidth): array
-    {
-        $words = explode(' ', $text);
-        $lines = [];
-        $currentLine = '';
-
-        foreach ($words as $word) {
-            $lineWithWord = $currentLine ? $currentLine . ' ' . $word : $word;
-            if ($font->box($lineWithWord)->getWidth() <= $maxWidth) {
-                $currentLine = $lineWithWord;
-            } else {
-                if ($currentLine) $lines[] = $currentLine;
-                $currentLine = $word;
-            }
-        }
-
-        if ($currentLine) $lines[] = $currentLine;
-        return $lines;
-    }
-
-    public function setTextBackgroundColor(string $textBackgroundColor): OgImage
-    {
-        $this->textBackgroundColor = $textBackgroundColor;
-        return $this;
-    }
-
-    public function setWidth(int $width): OgImage
-    {
-        $this->width = $width;
-        return $this;
-    }
-
-    public function setHeight(int $height): OgImage
-    {
-        $this->height = $height;
-        return $this;
-    }
-
-    public function setFontPath(string $fontPath): OgImage
-    {
-        $this->fontPath = $fontPath;
-        return $this;
-    }
-
-    public function setFontSize(int $fontSize): OgImage
-    {
-        $this->fontSize = $fontSize;
-        return $this;
-    }
 }
