@@ -1,6 +1,8 @@
-# OgImage v0.3.0
+# OgImage v0.4.0
 
 `OgImage` is a simple PHP class that generates Open Graph (OG) images dynamically using the Imagine library for image manipulation. It allows for customizing background colors or images, adding overlay text with adjustable styles, and setting various image dimensions.
+
+### NOTE: This project is still under development and may have breaking changes in the future.
 
 ## Features
 
@@ -15,7 +17,7 @@
 
 ## Todo
 - [ ] more human-readable text position
-- [ ] more human-readable watermark position
+- [x] more human-readable watermark position
 - [ ] custom text background opacity
 
 
@@ -64,7 +66,9 @@ $ogImage->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maur
     ->setFontPath(__DIR__ . '/assets/fonts/Roboto-Regular.ttf') # Set the font path for the text overlay
     ->setWatermark([
         'path' => __DIR__ . '/assets/images/github_logo.png', # Path to the watermark image
-        'position' => ['x' => 1050, 'y' => 520], # Position of the watermark image
+        'scale' => 150, # Scale of the watermark image (pixels)
+        'position' => ['x' => 'center', 'y' => 'center'], # place the watermark in the center
+        #'position' => ['x' => 1050, 'y' => 520], # Position of the watermark image
         'opacity' => 60 # Opacity of the watermark image
     ])
     ->generate() # Generate the final image
@@ -78,12 +82,17 @@ $ogImage->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maur
 - `setTextColor(string $textColor)`: Sets the color of the overlay text.
 - `setTextBackgroundColor(string $textBackgroundColor)`: Sets the background color behind the text.
 - `setBackground(string $color = '', string $image = '')`: Sets the background of the image, either as a color or from an image path.
-- `setWidth(int $width)`: Sets the width of the image.
-- `setHeight(int $height)`: Sets the height of the image.
+- `setWidth(int $width)`: Sets the width of the image. Default is 1200.
+- `setHeight(int $height)`: Sets the height of the image. Default is 630.
 - `generate()`: Generates the final image and returns it as an `ImageInterface` then it can be saved `->save()` or shown `->show()`.
 - `setFontPath(string $fontPath)`: Sets the font path for the text overlay.
 - `setFontSize(int $fontSize)`: Sets the font size of the overlay text.
 - `setTextPosition(array $position)`: Sets the position of the overlay text.
+- `setWatermark(array $watermark)`: Sets the watermark image on the image.
+   - `path`: Path to the watermark image.
+   - `position`: Position of the watermark image. (x = 'center', 'left', 'right', y = 'center', 'top', 'bottom')
+   - `opacity`: Opacity of the watermark image.
+   - `scale`: Scale of the watermark image (pixels).
 
 ## License
 

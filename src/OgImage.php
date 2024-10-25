@@ -26,8 +26,9 @@ class OgImage
 
     protected array $watermark = [
         'path' => '',
-        'position' => ['x' => 0, 'y' => 0],
-        'opacity' => 100
+        'scale' => 150,
+        'position' => ['x' => 'left', 'y' => 'bottom'],
+        'opacity' => 60
     ];
 
 
@@ -165,26 +166,64 @@ class OgImage
         }
     }
 
-private function addWatermark(ImageInterface $image): void
-{
-    // Open the watermark image and get its size
-    $watermark = $this->imagine->open($this->watermark['path']);
-    $watermarkSize = $watermark->getSize();
 
-    // Calculate the scaling factor to resize the watermark to 150px width
-    $scale = 150 / $watermarkSize->getWidth();
+    private function addWatermark(ImageInterface $image): void
+    {
+        // Open the watermark image and get its size
+        $watermark = $this->imagine->open($this->watermark['path']);
+        $watermarkSize = $watermark->getSize();
 
-    // Resize the watermark proportionally
-    $newWatermarkSize = $watermarkSize->scale($scale);
-    $watermark->resize($newWatermarkSize);
+        // Calculate the scaling factor to resize the watermark to 150px width
+        $scale = $this->watermark['scale'] / $watermarkSize->getWidth();
 
-    // Calculate the position to place the watermark in the bottom left corner
-    $watermarkX = $this->watermark['position']['x'];
-    $watermarkY = $this->watermark['position']['y'];
+        // Resize the watermark proportionally
+        $newWatermarkSize = $watermarkSize->scale($scale);
+        $watermark->resize($newWatermarkSize);
 
-    // Paste the watermark onto the image
-    $image->paste($watermark, new Point($watermarkX, $watermarkY), $this->watermark['opacity']);
-}
+        // Calculate the position to place the watermark in the bottom left corner
+        $watermarkPosition = $this->calculateWatermarkPosition($image, $watermark);
+
+
+        // Paste the watermark onto the image
+        $image->paste($watermark, $watermarkPosition, $this->watermark['opacity']);
+    }
+
+    private function calculateWatermarkPosition(ImageInterface $image, ImageInterface $watermark): Point
+    {
+        $imageSize = $image->getSize();
+        $watermarkSize = $watermark->getSize();
+
+        switch ($this->watermark['position']['x']) {
+            case 'left':
+                $x = 0;
+                break;
+            case 'center':
+                $x = ($imageSize->getWidth() - $watermarkSize->getWidth()) / 2;
+                break;
+            case 'right':
+                $x = $imageSize->getWidth() - $watermarkSize->getWidth();
+                break;
+            default:
+                $x = $this->watermark['position']['x'];
+        }
+
+        switch ($this->watermark['position']['y']) {
+            case 'top':
+                $y = 10;
+                break;
+            case 'center':
+                $y = ($imageSize->getHeight() - $watermarkSize->getHeight()) / 2;
+                break;
+            case 'bottom':
+                $y = $imageSize->getHeight() - $watermarkSize->getHeight() - 15;
+                break;
+            default:
+                $y = $this->watermark['position']['y'];
+        }
+
+        return new Point($x, $y);
+
+    }
 
 
     /**
@@ -262,7 +301,7 @@ private function addWatermark(ImageInterface $image): void
     {
         $image = $this->createBackground();
 
-        if(!empty($this->watermark['path'])) {
+        if (!empty($this->watermark['path'])) {
             $this->addWatermark($image);
         }
 
@@ -271,6 +310,17 @@ private function addWatermark(ImageInterface $image): void
         return $image;
     }
 
+    /**
+     * This method accepts an array for watermark configuration. The watermark array should contain the following:
+     *
+     * Watermark path: The path to the watermark image.
+     * Scale: The scaling factor to resize the watermark image.
+     * Position: The position to place the watermark image. It can be either 'left', 'center', 'right' for the x-axis and 'top', 'center', 'bottom' for the y-axis or custom coordinates.
+     * Opacity: The opacity level of the watermark image.
+     *
+     * @param array $watermark
+     * @return $this
+     */
     public function setWatermark(array $watermark): OgImage
     {
         $this->watermark = $watermark;
