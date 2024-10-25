@@ -13,6 +13,12 @@
 - **Watermark**: Add a watermark to the image with a custom position and opacity.
 
 
+## Todo
+- [ ] more human-readable text position
+- [ ] more human-readable watermark position
+- [ ] custom text background opacity
+
+
 ## Example image
 ![Example Image](docs/images/example.png)
 
