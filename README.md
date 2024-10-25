@@ -10,7 +10,7 @@
 - **Flexible image size**: Customize the image width and height to suit your needs.
 - **Text position**: Set the position of the overlay text on the image.
 - **Font size**: Set the font size of the overlay text.
-- ** Watermark**: Add a watermark to the image with a custom position and opacity.
+- **Watermark**: Add a watermark to the image with a custom position and opacity.
 
 
 ## Example image
