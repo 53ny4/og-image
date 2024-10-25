@@ -8,6 +8,8 @@
 - **Overlay text**: Add text with adjustable font size, color, and background color.
 - **Automatic font size adjustment**: Dynamically resizes text to fit within the text area.
 - **Flexible image size**: Customize the image width and height to suit your needs.
+- **Text position**: Set the position of the overlay text on the image.
+- **Font size**: Set the font size of the overlay text.
 
 
 ## Example image
