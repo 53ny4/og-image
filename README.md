@@ -1,4 +1,4 @@
-# OgImage v0.1.0
+# OgImage v0.2.0
 
 `OgImage` is a simple PHP class that generates Open Graph (OG) images dynamically using the Imagine library for image manipulation. It allows for customizing background colors or images, adding overlay text with adjustable styles, and setting various image dimensions.
 
