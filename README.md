@@ -1,4 +1,4 @@
-# OG Image Generator in PHP 1.0.0
+# OG Image Generator in PHP 1.1.0
 
 ### NOTE: This project is still in development.
 
@@ -195,26 +195,30 @@ use s3ny4\OgImage\OgWatermark;
 $ogImage = new OgImage(1200, 630); // Custom dimensions
 
 // Set background (image)
-$ogBackground = new OgBackground('/path/to/background.jpg');
-$ogImage->setBackground($ogBackground);
+$ogBackground = new OgBackground('/path/to/background.jpg'); # Image background
+
+// Set background (solid color)
+// $ogBackground = new OgBackground('#ff0000'); # Red background
+
+$ogImage->setBackground($ogBackground); # Set the background
 
 // Add text
 $ogText = new OgText();
-$ogText->setText('Your Custom OG Image');
-$ogText->setPosition('center', 'center');
-$ogText->setColor('#ffffff');
-$ogText->setSize(60);
+$ogText->setText('Your Custom OG Image'); # Text
+$ogText->setPosition('center', 'center'); # x - left, right, center; y - top, bottom, center
+$ogText->setColor('#ffffff'); # Text color
+$ogText->setSize(60); # Font size
 $ogText->setBackground('000000', 50); // Semi-transparent black background
-$ogText->setPadding(20);
-$ogImage->addText($ogText);
+$ogText->setPadding(20); # Padding around the text
+$ogImage->addText($ogText); # Add the text to the image
 
 // Add watermark
 $ogWatermark = new OgWatermark();
-$ogWatermark->image('/path/to/watermark.png');
-$ogWatermark->setPosition('bottom', 'right');
-$ogWatermark->setSize(100);
-$ogWatermark->setOpacity(80);
-$ogImage->addWatermark($ogWatermark);
+$ogWatermark->image('/path/to/watermark.png'); # Watermark image
+$ogWatermark->setPosition('right', 'bottom'); # x - left, right, center; y - top, bottom, center
+$ogWatermark->setSize(100); # Width of 100 pixels
+$ogWatermark->setOpacity(80); # 80% opacity
+$ogImage->addWatermark($ogWatermark); # Add the watermark to the image
 
 // output to browser
 $ogImage->render();
@@ -222,7 +226,7 @@ $ogImage->render();
 //or
     
 // Render and output the image
-$ogImage->render('output.png');
+// $ogImage->render('output.png');
 ```
 
 ## Customization

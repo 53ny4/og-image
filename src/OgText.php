@@ -8,43 +8,120 @@ use Imagine\Image\Point;
 
 class OgText
 {
-    private $text;
-    private $position = ['x' => 'center', 'y' => 'center'];
-    private $color = '000000';
-    private $size = 24;
-    private $fontFile = __DIR__ . '/assets/fonts/Bebas-Regular.ttf'; // Ensure you have this font or specify another
 
-    // Background properties
-    private $hasBackground = false;
+
+    /**
+     * @var string $text The text to be rendered.
+     */
+    private string $text;
+
+    /**
+     * @var array $position The position of the text.
+     *                      'x' can be 'center', 'left', 'right', or a specific pixel value.
+     *                      'y' can be 'center', 'top', 'bottom', or a specific pixel value.
+     */
+    private array $position = ['x' => 'center', 'y' => 'center'];
+
+    /**
+     * @var string $color The color of the text in hexadecimal format (with or without '#').
+     */
+    private string $color = '000000';
+
+    /**
+     * @var int $size The font size of the text.
+     */
+    private int $size = 24;
+
+    /**
+     * @var string $fontFile The path to the font file to be used for the text.
+     */
+    private string $fontFile = __DIR__ . '/assets/fonts/Bebas-Regular.ttf'; // Ensure you have this font or specify another
+
+// Background properties
+
+    /**
+     * @var bool $hasBackground Indicates if the text has a background.
+     */
+    private bool $hasBackground = false;
+
+    /**
+     * @var string $backgroundColor The background color in hexadecimal format (without '#').
+     */
     private $backgroundColor = '000000';
+
+    /**
+     * @var int $backgroundOpacity The opacity of the background (0-100).
+     */
     private $backgroundOpacity = 100; // Opacity (0-100)
 
-    // Text wrapping
+// Text wrapping
+
+    /**
+     * @var int|null $maxWidth The maximum width for text wrapping in pixels.
+     */
     private $maxWidth; // Maximum width for text wrapping
 
-    // Padding property (vertical padding)
-    private $padding = 10; // Default vertical padding in pixels
+// Padding property (vertical padding)
 
+    /**
+     * @var int $padding The vertical padding around the text in pixels.
+     */
+    private int $padding = 10; // Default vertical padding in pixels
+
+    public $utils;
+
+
+    public function __construct()
+    {
+        $this->utils = new OgUtils();
+    }
+
+    /**
+     * Sets the text to be rendered.
+     *
+     * @param string $text The text to be rendered.
+     */
     public function setText($text)
     {
         $this->text = $text;
     }
 
+    /**
+     * Sets the position of the text.
+     *
+     * @param string|int $x The horizontal position ('center', 'left', 'right', or a specific pixel value).
+     * @param string|int $y The vertical position ('center', 'top', 'bottom', or a specific pixel value).
+     */
     public function setPosition($x, $y)
     {
         $this->position = ['x' => $x, 'y' => $y];
     }
 
+    /**
+     * Sets the color of the text.
+     *
+     * @param string $color The color of the text in hexadecimal format (with or without '#').
+     */
     public function setColor($color)
     {
         $this->color = $color;
     }
 
+    /**
+     * Sets the font size of the text.
+     *
+     * @param int $size The font size of the text.
+     */
     public function setSize($size)
     {
         $this->size = $size;
     }
 
+    /**
+     * Sets the path to the font file to be used for the text.
+     *
+     * @param string $fontFile The path to the font file.
+     */
     public function setFontFile($fontFile)
     {
         $this->fontFile = $fontFile;
@@ -53,10 +130,10 @@ class OgText
     /**
      * Enables background under the text.
      *
-     * @param string $color   Background color in hex without '#'
-     * @param int    $opacity Opacity from 0 (transparent) to 100 (opaque)
+     * @param string $color Background color in hex with or without '#'
+     * @param int $opacity Opacity from 0 (transparent) to 100 (opaque)
      */
-    public function setBackground($color, $opacity = 100)
+    public function setBackground($color, $opacity = 100): void
     {
         $this->hasBackground = true;
         $this->backgroundColor = $color;
@@ -68,7 +145,7 @@ class OgText
      *
      * @param int $maxWidth Maximum width in pixels
      */
-    public function setMaxWidth($maxWidth)
+    public function setMaxWidth($maxWidth): void
     {
         $this->maxWidth = $maxWidth;
     }
@@ -78,11 +155,21 @@ class OgText
      *
      * @param int $padding Padding in pixels
      */
-    public function setPadding($padding)
+    public function setPadding($padding): void
     {
         $this->padding = $padding;
     }
 
+    /**
+     * Applies the text settings to the given image.
+     *
+     * This function draws the text on the provided image based on the current settings.
+     * It handles text wrapping, background drawing, and text positioning.
+     *
+     * @param ImageInterface $image The image to which the text will be applied.
+     * @param int $imageWidth The width of the image.
+     * @param int $imageHeight The height of the image.
+     */
     public function applyToImage($image, $imageWidth, $imageHeight)
     {
         $palette = new RGB();
@@ -100,7 +187,7 @@ class OgText
         $textBlockHeight = count($lines) * $lineHeight;
 
         // Calculate starting Y position, including top padding
-        $yStart = $this->calculatePosition($this->position['y'], $textBlockHeight + 2 * $this->padding, $imageHeight);
+        $yStart = $this->utils->calculatePosition($this->position['y'], $textBlockHeight + 2 * $this->padding, $imageHeight);
 
         // xStart is 0 since background rectangle is full width
         $xStart = 0;
@@ -121,7 +208,7 @@ class OgText
             $textBox = $font->box($line);
 
             // Calculate x position based on alignment
-            $x = $this->calculatePosition($this->position['x'], $textBox->getWidth(), $imageWidth);
+            $x = (new OgUtils())->calculatePosition($this->position['x'], $textBox->getWidth(), $imageWidth);
 
             $y = $yStart + $this->padding + $i * $lineHeight;
             $point = new Point($x, $y);
@@ -129,6 +216,18 @@ class OgText
         }
     }
 
+    /**
+     * Wraps the given text into lines that fit within the specified maximum width.
+     *
+     * This function splits the text into words and arranges them into lines
+     * such that each line's width does not exceed the specified maximum width.
+     * If a single word is longer than the maximum width, it splits the word.
+     *
+     * @param \Imagine\Gd\Font $font The font used to measure the text width.
+     * @param string $text The text to be wrapped.
+     * @param int $maxWidth The maximum width for each line in pixels.
+     * @return array An array of strings, each representing a line of wrapped text.
+     */
     private function wrapText($font, $text, $maxWidth)
     {
         $words = explode(' ', $text);
@@ -164,18 +263,5 @@ class OgText
         }
 
         return $lines;
-    }
-
-    private function calculatePosition($position, $elementSize, $imageSize)
-    {
-        if ($position === 'center') {
-            return intval(($imageSize - $elementSize) / 2);
-        } elseif ($position === 'left' || $position === 'top') {
-            return 0;
-        } elseif ($position === 'right' || $position === 'bottom') {
-            return $imageSize - $elementSize;
-        } else {
-            return intval($position);
-        }
     }
 }

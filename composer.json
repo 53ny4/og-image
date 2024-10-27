@@ -15,12 +15,16 @@
         }
     ],
     "minimum-stability": "stable",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "require": {
         "php": "^8.2",
         "imagine/imagine": "^1.3"
     },
     "require-dev": {
         "symfony/var-dumper": "^7.1"
+    },
+    "suggest": {
+        "ext-gd": "To use GD library",
+        "ext-ctype": "For better performance"
     }
 }
