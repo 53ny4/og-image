@@ -30,7 +30,7 @@ A simple and flexible PHP library for generating Open Graph (OG) images with cus
   - [Adding Text](#adding-text)
     - [Text Positioning](#text-positioning)
     - [Text Styling](#text-styling)
-    - [Background Rectangle for Text](#background-rectangle-for-text)
+    - [Background Rectangle for Text](#background-for-text)
   - [Adding Watermarks](#adding-watermarks)
   - [Full Example](#full-example)
 - [Customization](#customization)
@@ -269,12 +269,23 @@ $ogImage->render();
   $ogText->setMaxWidth(800); // Wrap text at 800 pixels
   ```
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
 ---
 
 **Note:** Ensure all file paths are correct and that necessary assets (fonts, images) are available in the specified locations. Adjust permissions as needed to allow the script to read and write files.
 
 **Disclaimer:** This library uses the GD library for image manipulation.
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/license/mit)
+
+--- 
+
+Copyright 2024 53ny4
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
