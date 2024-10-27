@@ -1,4 +1,4 @@
-# OG Image Generator in PHP 1.1.0 (GD Driver)
+# OG Image Generator in PHP 1.1.1 (GD Driver)
     
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/53ny4/og-image.svg?style=flat-square)
 
@@ -14,6 +14,16 @@ A simple and flexible PHP library for generating Open Graph (OG) images with cus
 
 ![Example Image](docs/images/example.png)
 
+![Example Image](docs/images/example_background.png)
+
+![Example Image](docs/images/example_background_small.png)
+
+### Fancy Memorial Example
+
+There are 3 watermarks elements in this example: the logo, fancy frame and a portrait and 2 text elements: name and dates.
+
+![Example Image](docs/images/fancy_memorial_og.png)
+as used at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](https://foreverafter.life/image/og/278258412528275.png) 
 
 
 
