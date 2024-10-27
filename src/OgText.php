@@ -264,4 +264,9 @@ class OgText
 
         return $lines;
     }
+
+    public function setFont(string $string)
+    {
+        $this->fontFile = $string;
+    }
 }
