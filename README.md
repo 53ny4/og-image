@@ -1,4 +1,8 @@
-# OG Image Generator in PHP 1.1.0
+# OG Image Generator in PHP 1.1.0 (GD Driver)
+    
+![Latest Version on Packagist](https://img.shields.io/packagist/v/53ny4/og-image.svg?style=flat-square)
+
+
 
 ### NOTE: This project is still in development.
 
@@ -72,8 +76,13 @@ A simple and flexible PHP library for generating Open Graph (OG) images with cus
    composer install
    ```
 
-   Ensure that the `imagine/imagine` library is installed, which is used for image manipulation.
+   Ensure that the [imagine/imagine](https://github.com/php-imagine/Imagine) package is installed and available in the project.
 
+---
+
+**NOTE:** only GD driver is used. Make sure that the GD library is installed and enabled in your PHP configuration.
+
+---
 ## Usage
 
 ### Basic Usage
