@@ -216,6 +216,11 @@ $ogWatermark->setSize(100);
 $ogWatermark->setOpacity(80);
 $ogImage->addWatermark($ogWatermark);
 
+// output to browser
+$ogImage->render();
+
+//or
+    
 // Render and output the image
 $ogImage->render('output.png');
 ```
@@ -259,4 +264,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 **Note:** Ensure all file paths are correct and that necessary assets (fonts, images) are available in the specified locations. Adjust permissions as needed to allow the script to read and write files.
 
-**Disclaimer:** This library uses the GD library for image manipulation. For advanced features like gradients with transparency, consider using the Imagick extension with the Imagine library.
+**Disclaimer:** This library uses the GD library for image manipulation.
