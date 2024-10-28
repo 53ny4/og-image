@@ -3,6 +3,7 @@
 namespace s3ny4\OgImage;
 
 use Imagine\Gd\Font;
+use Imagine\Image\FontInterface;
 use Imagine\Image\Palette\RGB;
 use Imagine\Image\Point;
 
@@ -180,7 +181,8 @@ class OgText
         $maxTextWidth = $this->maxWidth ?: $imageWidth; // Full image width
 
         // Wrap text into lines
-        $lines = $this->wrapText($font, $this->text, $maxTextWidth);
+        $lines = $this->wrapText($font,$this->text, $maxTextWidth); // @todo: Implement wrapText method from Imagine/Imagine
+
 
         // Calculate total height of text block
         $lineHeight = $font->getSize() + 5; // Add 5 pixels of line spacing
@@ -188,9 +190,6 @@ class OgText
 
         // Calculate starting Y position, including top padding
         $yStart = $this->utils->calculatePosition($this->position['y'], $textBlockHeight + 2 * $this->padding, $imageHeight);
-
-        // xStart is 0 since background rectangle is full width
-        $xStart = 0;
 
         // Draw background rectangle if enabled
         if ($this->hasBackground) {
