@@ -15,6 +15,32 @@ This project was inspired by my clients, each of them wanted to have a custom OG
 One wanted to have a simple image with a quote, another wanted to have an avatar of the user displayed and so on.
 While there are projects like that and don't get me wrong, they are great, but they are not flexible enough for my needs.
 
+On the other hand, Imagine/Imagine is a great library, but it has a bit of code to write to get the desired result.
+
+say, watermark, for example, you have to write a bit of code to get the desired result.
+
+```php
+$watermark = $imagine->open('/my/watermark.png');
+$image     = $imagine->open('/path/to/image.jpg');
+$size      = $image->getSize();
+$wSize     = $watermark->getSize();
+
+$bottomRight = new Imagine\Image\Point($size->getWidth() - $wSize->getWidth(), $size->getHeight() - $wSize->getHeight());
+
+$image->paste($watermark, $bottomRight);
+```
+It is simpler than native GD, but still.
+I wanted it to be straightforward and simple, since I'm using it quite often.
+
+```bash
+createImage()
+addWatermark(bottom,left)
+addText('Hello World',center,center)
+render()
+```
+
+Done.
+
 ---
 
 ## Example Image
