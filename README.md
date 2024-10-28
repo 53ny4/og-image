@@ -18,6 +18,10 @@ A simple and flexible PHP library for generating Open Graph (OG) images with cus
 
 ![Example Image](docs/images/example_background_small.png)
 
+![Example Image](docs/images/example_quote.png)
+
+![Example Image](docs/images/example_borders.png)
+
 ### Fancy Memorial Example
 
 There are 3 watermarks elements in this example: the logo, fancy frame and a portrait and 2 text elements: name and dates.
@@ -52,6 +56,7 @@ as used at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](http
 
 - Generate OG images with custom dimensions.
 - Set backgrounds using solid colors or images.
+- Add borders to the background.
 - Add text with customizable font, size, color, and alignment.
 - Wrap text automatically within a specified width.
 - Add background rectangles behind text with adjustable opacity and padding.
@@ -113,7 +118,14 @@ $ogImage = new OgImage();
 
 // Set background (solid color)
 $ogBackground = new OgBackground('#ffffff'); // White background
+$ogBackground->addBorder('bottom', 10, '#ff0000');  // 10px red border at the bottom
+$ogBackground->addBorder('top', 10, '#00ff00');  // 10px green border at the top
+$ogBackground->addBorder('left', 10, '#0000ff');  // 10px blue border at the left
+$ogBackground->addBorder('right', 10, '#ffff00');  // 10px yellow border at the right
+
 $ogImage->setBackground($ogBackground); // Set the background
+
+
 
 // Add text
 $ogText = new OgText();
@@ -143,6 +155,17 @@ $ogImage->setBackground($ogBackground);
 ```php
 $ogBackground = new OgBackground('/path/to/background.jpg');
 $ogImage->setBackground($ogBackground);
+```
+
+#### Adding Borders
+
+You can add borders to the background with custom width and color.
+
+```php
+$ogBackground->addBorder('bottom', 10, '#ff0000'); // 10px red border at the bottom
+$ogBackground->addBorder('top', 10, '#00ff00'); // 10px green border at the top
+$ogBackground->addBorder('left', 10, '#0000ff'); // 10px blue border at the left
+$ogBackground->addBorder('right', 10, '#ffff00'); // 10px yellow border at the right
 ```
 
 ### Adding Text
