@@ -165,6 +165,7 @@ require 'vendor/autoload.php';
 use s3ny4\OgImage\OgImage;
 use s3ny4\OgImage\OgBackground;
 use s3ny4\OgImage\OgText;
+use s3ny4\OgImage\OgWatermark;
 
 // Create a new OgImage instance
 $ogImage = new OgImage();
@@ -263,6 +264,7 @@ $ogText->setBackground('000000', 80); // Black background with 80% opacity
 ### Adding Watermarks
 
 Add watermark image with customizable size, position, and opacity. (can be added multiple watermarks)
+Watermark treated as a separate layer, so you can add multiple watermarks and they can overlap each other.
 
 Hint: watermark can be not only used as an actual watermark, but also as a logo or any other image. Also: you can use pixel values for custom positioning.
 
