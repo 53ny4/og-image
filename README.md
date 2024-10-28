@@ -191,7 +191,7 @@ $ogImage->addText($ogText); // Add the text to the image
 
 $ogWatermark = new OgWatermark();
 $ogWatermark->image('/path/to/watermark.png');
-$ogWatermark->setPosition('bottom', 'right');
+$ogWatermark->setPosition('right', 'bottom'); // Bottom right corner; x - left, right, center; y - top, bottom, center
 $ogWatermark->setSize(100); // Width of 100 pixels
 $ogWatermark->setOpacity(50); // 50% opacity
 $ogImage->addWatermark($ogWatermark); // Add the watermark to the image
@@ -274,7 +274,7 @@ use s3ny4\OgImage\OgWatermark;
 // Create a new OgWatermark instance
 $ogWatermark = new OgWatermark();
 $ogWatermark->image('/path/to/watermark.png');
-$ogWatermark->setPosition('bottom', 'right');
+$ogWatermark->setPosition('right', 'bottom'); // Bottom right corner; x - left, right, center; y - top, bottom, center
 $ogWatermark->setSize(100); // Width of 100 pixels
 $ogWatermark->setOpacity(50); // 50% opacity
 
