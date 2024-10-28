@@ -82,6 +82,31 @@ There are 3 watermarks elements in this example: the logo, fancy frame and a por
 as used at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](https://foreverafter.life/image/og/278258412528275.png) 
 
 
+---
+
+### Pre-defined template
+
+Pre-defined templates are something that I'm working on right now.
+The idea is to have a set of pre-defined templates that you can use to generate images.
+Such as, for example, a blog post template, a quote template, a product template, user profile template and so on.
+
+![Example Image](docs/images/example_blog_template.png)
+
+
+```php
+$ogImageTemplate = new OgTemplate('blog');
+
+// optionally set custom background either solid color or image
+#$ogImageTemplate->template->background('/path/to/background.jpg');
+
+$ogImageTemplate->template->title('Lorem Ipsum Blog post');
+$ogImageTemplate->template->description('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec dui eu turpis pulvinar rhoncus a ut velit. Nam eget lacus orci. Sed ultrices vitae nunc a elementum.');
+$ogImageTemplate->render();
+```
+
+---
+
+
 
 ## Table of Contents
 
