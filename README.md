@@ -6,7 +6,16 @@
 
 ### NOTE: This project is still in development.
 
-A simple and flexible PHP library for generating Open Graph (OG) images with customizable backgrounds, text, and watermarks. Perfect for creating dynamic social media preview images for your website or application.
+---
+
+A simple and flexible PHP library for generating Open Graph (OG) (but really any type of) images with customizable backgrounds, text, and watermarks. 
+Perfect for creating dynamic social media preview images for your website or application.
+
+This project was inspired by my clients, each of them wanted to have a custom OG image for their website.
+One wanted to have a simple image with a quote, another wanted to have an avatar of the user displayed and so on.
+While there are projects like that and don't get me wrong, they are great, but they are not flexible enough for my needs.
+
+---
 
 ## Example Image
 
@@ -14,11 +23,27 @@ A simple and flexible PHP library for generating Open Graph (OG) images with cus
 
 ![Example Image](docs/images/example.png)
 
+---
+
+Image background with text and watermark.
+
 ![Example Image](docs/images/example_background.png)
+
+---
+
+Resized image background with text. (see original image [here](docs/images/background_small_original.png))
 
 ![Example Image](docs/images/example_background_small.png)
 
+---
+
+Image background with for quote.
+
 ![Example Image](docs/images/example_quote.png)
+
+---
+
+Color background with borders and text.
 
 ![Example Image](docs/images/example_borders.png)
 
@@ -41,6 +66,7 @@ as used at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](http
   - [Setting Backgrounds](#setting-backgrounds)
     - [Solid Color Background](#solid-color-background)
     - [Image Background](#image-background)
+    - [Adding Borders](#adding-borders)
   - [Adding Text](#adding-text)
     - [Text Positioning](#text-positioning)
     - [Text Styling](#text-styling)
@@ -102,7 +128,7 @@ as used at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](http
 
 ### Basic Usage
 
-Here's a quick example of how to generate an OG image with a solid color background and custom text.
+Here's a quick example of how to generate an OG image with a solid color background, border, watermark and custom text.
 
 ```php
 <?php
@@ -134,6 +160,13 @@ $ogText->setPosition('center', 'center');
 $ogText->setColor('000000'); // Black text
 $ogText->setSize(60);
 $ogImage->addText($ogText); // Add the text to the image
+
+$ogWatermark = new OgWatermark();
+$ogWatermark->image('/path/to/watermark.png');
+$ogWatermark->setPosition('bottom', 'right');
+$ogWatermark->setSize(100); // Width of 100 pixels
+$ogWatermark->setOpacity(50); // 50% opacity
+$ogImage->addWatermark($ogWatermark); // Add the watermark to the image
 
 // Render and output the image
 $ogImage->render(); // Output to browser
@@ -204,7 +237,7 @@ $ogText->setBackground('000000', 80); // Black background with 80% opacity
 
 Add watermark image with customizable size, position, and opacity. (can be added multiple watermarks)
 
-Hint: watermark can be not only as an actual watermark, but also as a logo or any other image. Also: you can use pixel values for custom positioning.
+Hint: watermark can be not only used as an actual watermark, but also as a logo or any other image. Also: you can use pixel values for custom positioning.
 
 ```php
 use s3ny4\OgImage\OgWatermark;
