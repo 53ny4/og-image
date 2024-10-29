@@ -112,19 +112,21 @@ at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](https://fore
 
 ## Features
 
-- Generate OG images with custom dimensions.
+- Generate OG images or any image with custom dimensions.
 - Set backgrounds using solid colors or images.
-- Add borders to the background.
+- Add borders (top,bottom,left,right) to the background.
 - Add text with customizable font, size, color, and alignment.
 - Wrap text automatically within a specified width.
 - Add background rectangles behind text with adjustable opacity and padding.
 - Include watermarks with adjustable size, position, and opacity.
+- Custom templates for reusable image designs.
 
 ## Requirements
 
 - PHP 8.2.
 - Composer.
 - GD library installed and enabled.
+- [imagine/imagine](https://github.com/php-imagine/Imagine)
 
 ## Installation
 
