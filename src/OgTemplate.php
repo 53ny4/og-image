@@ -6,11 +6,11 @@ use s3ny4\OgImage\templates\OgBlogTemplate;
 
 class OgTemplate
 {
+
+
     private $ogImage;
     public $template;
 
-    // Template-specific properties
-    private $elements = [];
 
     public function __construct($template)
     {
@@ -21,32 +21,34 @@ class OgTemplate
         $this->initializeTemplate();
     }
 
-    private function initializeTemplate()
-    {
-
-        switch ($this->template) {
-            case 'blog':
-                $tpl =  new OgBlogTemplate();
-                break;
-            // Add more templates as needed
-            default:
-                throw new \InvalidArgumentException("Template '{$this->template}' not recognized.");
-        }
-
-        $this->template = $tpl;
+    /**
+ * Initializes the template based on the provided template name.
+ *
+ * This function sets the template object based on the template name provided
+ * during the construction of the OgTemplate object. If the template name is not
+ * recognized, an InvalidArgumentException is thrown.
+ *
+ * @throws \InvalidArgumentException if the template name is not recognized.
+ */
+private function initializeTemplate()
+{
+    switch ($this->template) {
+        case 'blog':
+            $tpl = new OgBlogTemplate();
+            break;
+        // Add more templates as needed
+        default:
+            throw new \InvalidArgumentException("Template '{$this->template}' not recognized.");
     }
+
+    $this->template = $tpl;
+}
 
     public function render()
     {
         $image = new OgImage();
-        return  $this->template->prepare($image)->render();
-
-
+        return $this->template->prepare($image)->render();
     }
-
-
-
-
 
 
 }
