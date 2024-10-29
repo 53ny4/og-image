@@ -297,7 +297,7 @@ Your custom templates should extend the `OgImageTemplateBase` class and implemen
 class CustomTemplate extends OgImageTemplateBase
 ```
 
-The `initializeTemplate` method should set the background, text, and watermark elements for the image.
+The `initializeTemplate` method can set the background, text, and watermark elements for the image.
 
 ```php
 
