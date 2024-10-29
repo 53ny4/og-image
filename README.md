@@ -1,20 +1,20 @@
-# OG Image Generator in PHP 1.3 (GD Driver)
-    
+# OG Image Generator in PHP 1.5 (GD Driver)
+
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/53ny4/og-image.svg?style=flat-square)
 ![License](https://img.shields.io/packagist/l/53ny4/og-image.svg?style=flat-square)
-
-
 
 ### NOTE: This project is still in development.
 
 ---
 
-A simple and flexible PHP library for generating Open Graph (OG) (but really any type of) images with customizable backgrounds, text, and watermarks. 
+A simple and flexible PHP library for generating Open Graph (OG) (but really any type of) images with customizable
+backgrounds, text, and watermarks.
 Perfect for creating dynamic social media preview images for your website or application.
 
 This project was inspired by my clients, each of them wanted to have a custom OG image for their website.
 One wanted to have a simple image with a quote, another wanted to have an avatar of the user displayed and so on.
-While there are projects like that and don't get me wrong, they are great, but they are not flexible enough for my needs.
+While there are projects like that and don't get me wrong, they are great, but they are not flexible enough for my
+needs.
 
 On the other hand, Imagine/Imagine is a great library, but it has a bit of code to write to get the desired result.
 
@@ -30,6 +30,7 @@ $bottomRight = new Imagine\Image\Point($size->getWidth() - $wSize->getWidth(), $
 
 $image->paste($watermark, $bottomRight);
 ```
+
 It is simpler than native GD, but still.
 I wanted it to be straightforward and simple, since I'm using it quite often.
 
@@ -76,37 +77,15 @@ Color background with borders and text.
 
 ### Fancy Memorial Example
 
-There are 3 watermarks elements in this example: the logo, fancy frame and a portrait and 2 text elements: name and dates.
+There are 3 watermarks elements in this example: the logo, fancy frame and a portrait and 2 text elements: name and
+dates.
 
 ![Example Image](docs/images/fancy_memorial_og.png)
-as used at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](https://foreverafter.life/image/og/278258412528275.png) 
+as used
+at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](https://foreverafter.life/image/og/278258412528275.png)
 
 
 ---
-
-### Pre-defined template
-
-Pre-defined templates are something that I'm working on right now.
-The idea is to have a set of pre-defined templates that you can use to generate images.
-Such as, for example, a blog post template, a quote template, a product template, user profile template and so on.
-
-![Example Image](docs/images/example_blog_template.png)
-
-
-```php
-$ogImageTemplate = new OgTemplate('blog');
-
-// optionally set custom background either solid color or image
-#$ogImageTemplate->template->background('/path/to/background.jpg');
-
-$ogImageTemplate->template->title('Lorem Ipsum Blog post');
-$ogImageTemplate->template->description('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec dui eu turpis pulvinar rhoncus a ut velit. Nam eget lacus orci. Sed ultrices vitae nunc a elementum.');
-$ogImageTemplate->render();
-```
-
----
-
-
 
 ## Table of Contents
 
@@ -114,20 +93,21 @@ $ogImageTemplate->render();
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Basic Usage](#basic-usage)
-  - [Setting Backgrounds](#setting-backgrounds)
-    - [Solid Color Background](#solid-color-background)
-    - [Image Background](#image-background)
-    - [Adding Borders](#adding-borders)
-  - [Adding Text](#adding-text)
-    - [Text Positioning](#text-positioning)
-    - [Text Styling](#text-styling)
-    - [Background Rectangle for Text](#background-for-text)
-  - [Adding Watermarks](#adding-watermarks)
-  - [Full Example](#full-example)
+    - [Basic Usage](#basic-usage)
+    - [Setting Backgrounds](#setting-backgrounds)
+        - [Solid Color Background](#solid-color-background)
+        - [Image Background](#image-background)
+        - [Adding Borders](#adding-borders)
+    - [Adding Text](#adding-text)
+        - [Text Positioning](#text-positioning)
+        - [Text Styling](#text-styling)
+        - [Background Rectangle for Text](#background-for-text)
+    - [Adding Watermarks](#adding-watermarks)
+    - [Custom Templates](#custom-templates-how-to)
+    - [Full Example](#full-example)
 - [Customization](#customization)
-  - [Fonts](#fonts)
-  - [Padding and Alignment](#padding-and-alignment)
+    - [Fonts](#fonts)
+    - [Padding and Alignment](#padding-and-alignment)
 - [License](#license)
 
 ## Features
@@ -169,13 +149,15 @@ $ogImageTemplate->render();
    composer install
    ```
 
-   Ensure that the [imagine/imagine](https://github.com/php-imagine/Imagine) package is installed and available in the project.
+   Ensure that the [imagine/imagine](https://github.com/php-imagine/Imagine) package is installed and available in the
+   project.
 
 ---
 
 **NOTE:** only GD driver is used. Make sure that the GD library is installed and enabled in your PHP configuration.
 
 ---
+
 ## Usage
 
 ### Basic Usage
@@ -291,7 +273,8 @@ $ogText->setBackground('000000', 80); // Black background with 80% opacity
 Add watermark image with customizable size, position, and opacity. (can be added multiple watermarks)
 Watermark treated as a separate layer, so you can add multiple watermarks and they can overlap each other.
 
-Hint: watermark can be not only used as an actual watermark, but also as a logo or any other image. Also: you can use pixel values for custom positioning.
+Hint: watermark can be not only used as an actual watermark, but also as a logo or any other image. Also: you can use
+pixel values for custom positioning.
 
 ```php
 use s3ny4\OgImage\OgWatermark;
@@ -305,6 +288,103 @@ $ogWatermark->setOpacity(50); // 50% opacity
 
 $ogImage->addWatermark($ogWatermark);
 ```
+
+### Custom Templates (How to)
+
+Your custom templates should extend the `OgImageTemplateBase` class and implement the `initializeTemplate` method.
+
+```php
+class CustomTemplate extends OgImageTemplateBase
+```
+
+The `initializeTemplate` method should set the background, text, and watermark elements for the image.
+
+```php
+
+protected function initializeTemplate()
+    {
+        // Set a background image or color
+        $background = new OgBackground('#ffffff');
+        $background->addBorder('bottom', 10, '#ff22ff');
+        $background->addBorder('top', 10, '#ff22ff');
+        $this->ogImage->setBackground($background);
+
+        // Add event title
+        $titleText = new OgText();
+        $titleText->setPosition('center', 'top');
+        $titleText->setColor('000000');
+        $titleText->setSize(50);
+        $titleText->setPadding(20);
+        $this->elements['eventTitle'] = $titleText; // Assign the title to the template element
+
+        // Add event date
+        $dateText = new OgText();
+        $dateText->setPosition('center', 'bottom');
+        $dateText->setColor('000000');
+        $dateText->setSize(30);
+        $dateText->setPadding(20);
+        $this->elements['eventDate'] = $dateText; // Assign the date to the template element
+
+
+        // Add logo
+        $logo = new OgWatermark();
+        $logo->setPosition('center', 'center');
+        $logo->setOpacity(100); // 50% opacity
+        $this->elements['eventLogo'] = $logo; // Assign the logo to the template element
+
+    }
+
+```
+
+You can add custom properties to have a more flexible template.
+
+```php
+public function title($text)
+    {
+        if (isset($this->elements['eventTitle'])) {
+            /** @var OgText $titleText */
+            $titleText = $this->elements['eventTitle'];
+            $titleText->setText($text); // Set the text
+        }
+        return $this;
+    }
+
+    public function date($text)
+    {
+        if (isset($this->elements['eventDate'])) {
+            /** @var OgText $dateText */
+            $dateText = $this->elements['eventDate'];
+            $dateText->setText($text); // Set the text
+        }
+        return $this;
+    }
+
+    // logo
+    public function logo($path)
+    {
+        if (isset($this->elements['eventLogo'])) {
+            /** @var OgWatermark $logo */
+            $logo = $this->elements['eventLogo'];
+            $logo->image($path); // Set the image
+        }
+        return $this;
+    }
+```
+And then in your code you can use it like this:
+
+```php
+require '../vendor/autoload.php';
+
+TemplateManager::registerTemplate('event', EventTemplate::class); // Register the custom template
+$ogImage = TemplateManager::createTemplate('event'); // Create a new instance of the custom template
+$ogImage->title('Annual Conference 2023') // Set the title
+    ->date('October 29, 2024') // Set the date
+    ->logo(__DIR__ . '/assets/images/logo.png') // Set the logo
+    ->render(); // Render the image
+    
+```
+Result:
+![Example Image](docs/images/custom_template.png)
 
 ### Full Example
 
@@ -377,7 +457,8 @@ $ogImage->render();
   $ogText->setPadding(30); // 30 pixels of vertical padding
   ```
 
-- **Text Alignment:** Control the horizontal alignment (`'left'`, `'center'`, `'right'`) and vertical alignment (`'top'`, `'center'`, `'bottom'`).
+- **Text Alignment:** Control the horizontal alignment (`'left'`, `'center'`, `'right'`) and vertical alignment (
+  `'top'`, `'center'`, `'bottom'`).
 
   ```php
   $ogText->setPosition('left', 'top');
@@ -391,7 +472,8 @@ $ogImage->render();
 
 ---
 
-**Note:** Ensure all file paths are correct and that necessary assets (fonts, images) are available in the specified locations. Adjust permissions as needed to allow the script to read and write files.
+**Note:** Ensure all file paths are correct and that necessary assets (fonts, images) are available in the specified
+locations. Adjust permissions as needed to allow the script to read and write files.
 
 **Disclaimer:** This library uses the GD library for image manipulation.
 
