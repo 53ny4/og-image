@@ -9,24 +9,14 @@ class TemplateManager
     /**
      * Registers a template class with a key.
      *
-     * @param string $key       The key to identify the template.
+     * @param string $key The key to identify the template.
      * @param string $className The fully qualified class name.
+     * @throws \Exception
      */
-    public static function registerTemplate($key, $className)
+    public static function registerTemplate(string $key, string $className)
     {
 
         self::$templates[$key] = $className;
-    }
-
-    /**
-     * Creates an instance of the registered template.
-     *
-     * @param string $key The key of the template to instantiate.
-     * @return OgImageTemplateBase
-     * @throws \Exception
-     */
-    public static function createTemplate($key)
-    {
 
         if (isset(self::$templates[$key])) {
             $className = self::$templates[$key];
@@ -35,4 +25,5 @@ class TemplateManager
             throw new \Exception("Template '$key' not found.");
         }
     }
+
 }

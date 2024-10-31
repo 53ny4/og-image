@@ -1,4 +1,4 @@
-# OG Image Generator in PHP 1.5 (GD Driver)
+# OG Image Generator in PHP 1.6 (GD Driver)
 
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/53ny4/og-image.svg?style=flat-square)
 ![License](https://img.shields.io/packagist/l/53ny4/og-image.svg?style=flat-square)
@@ -119,7 +119,7 @@ at [ForeverAfter.Life](https://foreverafter.life/liam-payne) - [OG](https://fore
 - Wrap text automatically within a specified width.
 - Add background rectangles behind text with adjustable opacity and padding.
 - Include watermarks with adjustable size, position, and opacity.
-- Custom templates for reusable image designs.
+- Custom templates for easy image generation.
 
 ## Requirements
 
@@ -293,97 +293,78 @@ $ogImage->addWatermark($ogWatermark);
 
 ### Custom Templates (How to)
 
-Your custom templates should extend the `OgImageTemplateBase` class and implement the `initializeTemplate` method.
+Your custom templates should extend the `OgImageTemplateBase`.
 
 ```php
 class CustomTemplate extends OgImageTemplateBase
 ```
 
-The `initializeTemplate` method can set the background, text, and watermark elements for the image.
+Then you can add your custom methods to the template with specific properties that you want to set.
 
 ```php
 
-protected function initializeTemplate()
+public function background($color): EventTemplate
     {
-        // Set a background image or color
-        $background = new OgBackground('#ffffff');
-        $background->addBorder('bottom', 10, '#ff22ff');
-        $background->addBorder('top', 10, '#ff22ff');
+        $background = new OgBackground($color);
+        $background->addBorder('top', 10, 'fff000');
         $this->ogImage->setBackground($background);
+        return $this;
+    }
 
-        // Add event title
+    public function title($text): EventTemplate
+    {
         $titleText = new OgText();
         $titleText->setPosition('center', 'top');
         $titleText->setColor('000000');
         $titleText->setSize(50);
         $titleText->setPadding(20);
-        $this->elements['eventTitle'] = $titleText; // Assign the title to the template element
+        $titleText->setText($text);
+        $this->ogImage->addText($titleText);
 
-        // Add event date
+        return $this;
+    }
+
+    public function date($date): EventTemplate
+    {
         $dateText = new OgText();
         $dateText->setPosition('center', 'bottom');
         $dateText->setColor('000000');
         $dateText->setSize(30);
         $dateText->setPadding(20);
-        $this->elements['eventDate'] = $dateText; // Assign the date to the template element
+        $dateText->setText($date);
+        $this->ogImage->addText($dateText);
+
+        return $this;
+    }
 
 
-        // Add logo
-        $logo = new OgWatermark();
-        $logo->setPosition('center', 'center');
-        $logo->setOpacity(100); // 50% opacity
-        $this->elements['eventLogo'] = $logo; // Assign the logo to the template element
+    public function logo($image,$size): EventTemplate
+    {
+        // watermark
+        $watermark = new OgWatermark();
+        $watermark->image($image);
+        $watermark->setPosition('center', 'center');
+        $watermark->setSize($size);
+        $this->ogImage->addWatermark($watermark);
 
+        return $this;
     }
 
 ```
-
-You can add custom properties to have a more flexible template.
-
-```php
-public function title($text)
-    {
-        if (isset($this->elements['eventTitle'])) {
-            /** @var OgText $titleText */
-            $titleText = $this->elements['eventTitle'];
-            $titleText->setText($text); // Set the text
-        }
-        return $this;
-    }
-
-    public function date($text)
-    {
-        if (isset($this->elements['eventDate'])) {
-            /** @var OgText $dateText */
-            $dateText = $this->elements['eventDate'];
-            $dateText->setText($text); // Set the text
-        }
-        return $this;
-    }
-
-    // logo
-    public function logo($path)
-    {
-        if (isset($this->elements['eventLogo'])) {
-            /** @var OgWatermark $logo */
-            $logo = $this->elements['eventLogo'];
-            $logo->image($path); // Set the image
-        }
-        return $this;
-    }
-```
-And then in your code you can use it like this:
+And then in your code, instead of using a bunch of parameters, you can just use it like this:
 
 ```php
-require '../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-TemplateManager::registerTemplate('event', EventTemplate::class); // Register the custom template
-$ogImage = TemplateManager::createTemplate('event'); // Create a new instance of the custom template
-$ogImage->title('Annual Conference 2023') // Set the title
-    ->date('October 29, 2024') // Set the date
-    ->logo(__DIR__ . '/assets/images/logo.png') // Set the logo
-    ->render(); // Render the image
-    
+
+$ogImage = TemplateManager::registerTemplate('event', EventTemplate::class);
+
+$ogImage
+    ->background('#ffffff')
+    ->title('Annual Conference 2024')
+    ->date('November 1-3, 2024')
+    ->logo(__DIR__ . '/assets/images/conf_logo.png', 400)
+    ->render();
 ```
 Result:
 ![Example Image](docs/images/custom_template.png)
