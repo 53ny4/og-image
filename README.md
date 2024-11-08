@@ -1,4 +1,4 @@
-# OG Image Generator in PHP 1.6 (GD Driver)
+# OG Image Generator in PHP 1.6.1 (GD Driver)
 
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/53ny4/og-image.svg?style=flat-square)
 ![License](https://img.shields.io/packagist/l/53ny4/og-image.svg?style=flat-square)
