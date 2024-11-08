@@ -78,8 +78,9 @@ class OgImage
      * Renders the image with the background, texts, and watermarks.
      *
      * @param string|null $outputPath The path to save the output image. If null, the image is output directly.
+     * @param string $extension The file extension to use for the output image when rendering directly.
      */
-    public function render($outputPath = null)
+    public function render($outputPath = null, $extension = 'png')
     {
         // Create base image
         $this->image = $this->background->createBackground($this->width, $this->height, $this->imagine);
@@ -98,8 +99,8 @@ class OgImage
         if ($outputPath) {
             $this->image->save($outputPath);
         } else {
-            header('Content-Type: image/png');
-            echo $this->image->get('png');
+            header('Content-Type: image/'.$extension);
+            echo $this->image->get($extension);
         }
     }
 }
