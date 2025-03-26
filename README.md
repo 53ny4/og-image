@@ -1,9 +1,14 @@
-# OG Image Generator in PHP 1.6.1 (GD Driver)
+# OG Image Generator in PHP 1.6.1 (GD Driver) (No longer updated, see below)
+
+
+---
+
+### New version v2 is in development is located in `v2` branch [here](https://github.com/53ny4/og-image/tree/v2)
+
+---
 
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/53ny4/og-image.svg?style=flat-square)
 ![License](https://img.shields.io/packagist/l/53ny4/og-image.svg?style=flat-square)
-
-### NOTE: This project is still in development.
 
 ---
 
