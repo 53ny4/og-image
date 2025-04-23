@@ -4,6 +4,7 @@ namespace s3ny4\OgImage;
 use Imagine\Image\Point;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Palette\RGB;
+use Imagine\Image\ImagineInterface;
 use s3ny4\OgImage\Traits\PositionableTrait;
 
 class TextElement {
@@ -15,7 +16,7 @@ class TextElement {
     private string $fontColor = '#ffffff';
     private ?string $bgColor = null;
     private int $bgOpacity = 100;   // 0 = transparent, 100 = opaque
-    private int $lineHeight = 50;     // custom line height in px; 0 = auto
+    private int $lineHeight = 48;     // custom line height in px; 0 = auto
 
     public function setText(string $text): self {
         $this->text = $text;
@@ -57,25 +58,21 @@ class TextElement {
     }
 
     /**
-     * Apply the text element to the image, with word-wrap to fit width.
-     *
-     * @param ImageInterface $image
-     * @param int $imageWidth
-     * @param int $imageHeight
-     * @param \Imagine\Image\ImagineInterface $imagine
-     * @param RGB $palette
+     * Apply the text element to the image, with word-wrap and conditional line height.
      */
-    public function apply(ImageInterface $image, int $imageWidth, int $imageHeight, $imagine, RGB $palette): void {
+    public function apply(ImageInterface $image, int $imageWidth, int $imageHeight, ImagineInterface $imagine, RGB $palette): void {
         if (!file_exists($this->fontPath)) {
             throw new \RuntimeException("Font not found at {$this->fontPath}");
         }
-        // Prepare font
+
+        // Load font
         $font = $imagine->font(
             $this->fontPath,
             $this->fontSize,
             $palette->color($this->fontColor, 100)
         );
-        // Word wrap algorithm
+
+        // Word wrap into lines
         $maxTextWidth = $imageWidth - 2 * $this->paddingH;
         $words = preg_split('/\s+/', $this->text);
         $lines = [];
@@ -93,18 +90,28 @@ class TextElement {
         if ($current !== '') {
             $lines[] = $current;
         }
-        // Determine line height
+
+        // Calculate default font height
         $defaultHeight = $font->box('Mg')->getHeight();
-        $lh = $this->lineHeight > 0 ? $this->lineHeight : $defaultHeight;
-        $totalHeight = count($lines) * $lh;
-        // Compute text position
+        $needsCustomLH = count($lines) > 1 && $this->lineHeight > 0;
+        // Determine line spacing
+        $lh = $needsCustomLH ? $this->lineHeight : $defaultHeight;
+        // Total block height: defaultHeight + (lines-1)*lh if custom, else lines*lh
+        $totalHeight = $needsCustomLH
+            ? ($defaultHeight + ($lh * (count($lines) - 1)))
+            : (count($lines) * $lh);
+
+        // Compute max line width
         $maxLineWidth = 0;
         foreach ($lines as $l) {
             $w = $font->box($l)->getWidth();
             $maxLineWidth = max($maxLineWidth, $w);
         }
+
+        // Compute starting position
         $x = $this->computeX($imageWidth, $maxLineWidth);
         $y = $this->computeY($imageHeight, $totalHeight);
+
         // Draw background if specified
         if ($this->bgColor !== null) {
             $bg = $palette->color($this->bgColor, $this->bgOpacity);
@@ -115,13 +122,13 @@ class TextElement {
             $image->draw()->rectangle(
                 new Point($startX, $startY),
                 new Point($endX,   $endY),
-                $bg,
-                $bg
+                $bg, $bg
             );
         }
-        // Draw each line with custom line height
+
+        // Draw each line
         foreach ($lines as $i => $line) {
-            $dy = $y + $i * $lh;
+            $dy = $y + ($i * $lh);
             $image->draw()->text($line, $font, new Point($x, $dy));
         }
     }
