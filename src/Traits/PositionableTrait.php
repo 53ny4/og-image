@@ -20,8 +20,8 @@ trait PositionableTrait {
     }
 
     /**
-     * @param int $vertical   px shift down from calculated position
-     * @param int $horizontal px shift right from calculated position
+     * @param int $vertical   px shift vertically (down for 'top', up for 'bottom', or offset from center)
+     * @param int $horizontal px shift horizontally (right for 'left', left for 'right', or offset from center)
      */
     public function setMargin(int $vertical, int $horizontal = 0): self {
         $this->marginV = $vertical;
@@ -43,25 +43,47 @@ trait PositionableTrait {
      * Compute X coordinate based on position and margin
      */
     protected function computeX(int $containerW, int $contentW): int {
-        switch ($this->horizontal) {
-            case 'left':   $x = 0; break;
-            case 'center': $x = (int)(($containerW - $contentW)/2); break;
-            case 'right':  $x = $containerW - $contentW; break;
-            default:       $x = (int)$this->horizontal;
+        if (is_numeric($this->horizontal)) {
+            $x = (int)$this->horizontal + $this->marginH;
+        } else {
+            switch ($this->horizontal) {
+                case 'left':
+                    $x = $this->marginH;
+                    break;
+                case 'center':
+                    $x = (int)(($containerW - $contentW) / 2) + $this->marginH;
+                    break;
+                case 'right':
+                    $x = ($containerW - $contentW) - $this->marginH;
+                    break;
+                default:
+                    $x = $this->marginH;
+            }
         }
-        return max(0, min($x + $this->marginH, $containerW - $contentW));
+        return max(0, min($x, $containerW - $contentW));
     }
 
     /**
      * Compute Y coordinate based on position and margin
      */
     protected function computeY(int $containerH, int $contentH): int {
-        switch ($this->vertical) {
-            case 'top':    $y = 0; break;
-            case 'center': $y = (int)(($containerH - $contentH)/2); break;
-            case 'bottom': $y = $containerH - $contentH; break;
-            default:       $y = (int)$this->vertical;
+        if (is_numeric($this->vertical)) {
+            $y = (int)$this->vertical + $this->marginV;
+        } else {
+            switch ($this->vertical) {
+                case 'top':
+                    $y = $this->marginV;
+                    break;
+                case 'center':
+                    $y = (int)(($containerH - $contentH) / 2) + $this->marginV;
+                    break;
+                case 'bottom':
+                    $y = ($containerH - $contentH) - $this->marginV;
+                    break;
+                default:
+                    $y = $this->marginV;
+            }
         }
-        return max(0, min($y + $this->marginV, $containerH - $contentH));
+        return max(0, min($y, $containerH - $contentH));
     }
 }
