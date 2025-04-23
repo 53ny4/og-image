@@ -1,10 +1,21 @@
 
 # OG Image Generator
 
+---
+
 Generate Open Graph (OG) images dynamically using PHP. 
 This library allows you to programmatically create social media preview images with text, background, and watermarks using the Imagine image library.
 
+## Example
+
+---
+
+![Example](docs/images/example.png)
+
+
 ## 📦 Installation
+
+---
 
 ```bash
 composer require 53ny4/og-image
@@ -12,11 +23,15 @@ composer require 53ny4/og-image
 
 ## ⚙️ Requirements
 
+---
+
 - PHP ^8.2
 - `imagine/imagine` (automatically installed)
 -  supports only `GD` driver
 
 ## 🚀 Features
+
+---
 
 - Add styled text to your image (font, size, color, opacity, alignment)
 - Add background overlays for text
@@ -26,6 +41,8 @@ composer require 53ny4/og-image
 - Fit and scale background images to fill the canvas
 
 ## 🧱 Usage
+
+---
 
 ```php
 require 'vendor/autoload.php';
@@ -42,30 +59,35 @@ $og->setBackgroundImage('path/to/background.jpg');
 
 // Add text
 $text = (new TextElement())
-    ->setText("Hello World! This is an OG image.")
-    ->setFontPath('assets/fonts/Bebas-Regular.ttf')
-    ->setFontSize(48)
+    ->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam accumsan sed lacus venenatis eleifend. Aenean ipsum turpis, faucibus nec maximus sit amet, lobortis vel nisl. ')
+    ->setPosition('center', 'center')
+    ->setFontPath('path/to/font.ttf')
+    ->setFontSize(36)
     ->setFontColor('#ffffff')
-    ->setPosition('bottom', 'center')
-    ->setBgColor('#000000')
     ->setBgOpacity(50)
-    ->setLineHeight(1.4);
+    ->setBgColor('#ff0000');
 
 $og->addText($text);
 
 // Add watermark
-$watermark = (new Watermark('assets/logo.png'))
-    ->setPosition('top', 'left')
-    ->setOpacity(70);
-
+$watermark = (new Watermark('path/to/logo.png'))
+    ->setPosition('top', 'center')
+    ->setMargin(50)
+    ->setSize(150)
+    ->setOpacity(50);
 $og->addWatermark($watermark);
 
-// Save or output
-$og->save('output/og-image.jpg');
+// output image to the browser
+$og->render();
+
+// or save to file
+// $og->render('og-image.png');
 ```
 
 
 ## 📁 File Structure
+
+---
 
 ```
 src/
@@ -79,4 +101,5 @@ src/
 ## 📝 License
 
 ---
+
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
