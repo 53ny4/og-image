@@ -13,7 +13,7 @@ class OgImageGenerator {
     private int $width;
     private int $height;
     private RGB $palette;
-    private string $format = 'png';
+    private string $format = 'webp';
 
     private ?string $bgImagePath = null;
     private ?int $bgImageW     = null;
@@ -81,11 +81,11 @@ class OgImageGenerator {
     }
 
     /**
-     * Set output format: 'png', 'jpeg', or 'gif'.
+     * Set output format: 'png', 'jpeg', or 'gif', or 'webp'.
      */
     public function setFormat(string $format): self {
         $fmt = strtolower($format);
-        if (!in_array($fmt, ['png', 'jpeg', 'gif'], true)) {
+        if (!in_array($fmt, ['png', 'jpeg', 'gif','webp'], true)) {
             throw new \InvalidArgumentException("Unsupported format: {$format}");
         }
         $this->format = $fmt;
