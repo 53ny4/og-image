@@ -61,7 +61,7 @@ $og->setBackgroundImage('path/to/background.jpg');
 $text = (new TextElement())
     ->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam accumsan sed lacus venenatis eleifend. Aenean ipsum turpis, faucibus nec maximus sit amet, lobortis vel nisl. ')
     ->setPosition('center', 'center')
-    ->setFontPath('path/to/font.ttf')
+    ->setFontPath('src/assets/fonts/font.ttf')
     ->setFontSize(36)
     ->setFontColor('#ffffff')
     ->setBgOpacity(50)
@@ -70,7 +70,7 @@ $text = (new TextElement())
 $og->addText($text);
 
 // Add watermark
-$watermark = (new Watermark('path/to/logo.png'))
+$watermark = (new Watermark('src/assets/images/logo.png'))
     ->setPosition('top', 'center')
     ->setMargin(50)
     ->setSize(150)
@@ -84,19 +84,6 @@ $og->render();
 // $og->render('og-image.png');
 ```
 
-
-## 📁 File Structure
-
----
-
-```
-src/
-├── OgImageGenerator.php
-├── TextElement.php
-├── Watermark.php
-└── Traits/
-    └── PositionableTrait.php
-```
 
 ## 📝 License
 
