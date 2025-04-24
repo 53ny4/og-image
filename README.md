@@ -14,8 +14,16 @@ Table of Contents
 
 ---
 
-Generate Open Graph (OG) images dynamically using PHP. 
-This library allows you to programmatically create social media preview images with text, background, and watermarks using the Imagine image library.
+A simple and flexible PHP library for generating Open Graph (OG) (but really any type of) images with customizable
+backgrounds, text, and watermarks.
+Perfect for creating dynamic social media preview images for your website or application.
+
+This project was inspired by my clients, each of them wanted to have a custom OG image for their website.
+One wanted to have a simple image with a quote, another wanted to have an avatar of the user displayed and so on.
+While there are projects like that and don't get me wrong, they are great, but they are not flexible enough for my
+needs.
+
+On the other hand, Imagine/Imagine is a great library, but it has a bit of code to write to get the desired result.
 
 ## Example
 
