@@ -1,6 +1,17 @@
 
 # OG Image Generator
 
+Table of Contents
+=================
+- [OG Image Generator](#og-image-generator)
+  - [Example](#example)
+  - [📦 Installation](#-installation)
+  - [⚙️ Requirements](#️-requirements)
+  - [🚀 Features](#-features)
+  - [🧱 Usage](#-usage)
+  - [📝 License](#-license)
+
+
 ---
 
 Generate Open Graph (OG) images dynamically using PHP. 
@@ -12,6 +23,55 @@ This library allows you to programmatically create social media preview images w
 
 ![Example](docs/images/example.png)
 
+### Code for the above image:
+
+```php
+$og = new OgImageGenerator();
+$og->setBackgroundImage('src/assets/images/bg.png');
+$og->createImage();
+
+$text = (new TextElement())
+    ->setText('OgImage')
+    ->setFontSize(75)
+    ->setFontColor('#ffffff')
+    ->setFontPath('src/assets/fonts/BebasNeue-Regular.ttf')
+    ->setBgOpacity(50)
+    ->setMargin(50)
+    ->setPosition('top', 'center');
+
+$text2 = (new TextElement())
+    ->setText('Hello World!')
+    ->setFontSize(50)
+    ->setFontColor('#ffffff')
+    ->setFontPath('src/assets/fonts/BebasNeue-Regular.ttf')
+    ->setBgColor('#000000')
+    ->setBgOpacity(50)
+    ->setPosition(470, 'center');
+
+$text3 = (new TextElement())
+    ->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. ')
+    ->setFontSize(25)
+    ->setFontColor('#ffffff')
+    ->setFontPath('src/assets/fonts/BebasNeue-Regular.ttf')
+    ->setBgOpacity(50)
+    ->setPosition(539, 'center');
+
+
+
+$watermark = (new Watermark())
+    ->setWatermarkPath('src/assets/images/watermark.png')
+    ->setSize(100)
+    ->setMargin(10)
+    ->setPosition('bottom', 'right');
+
+
+$og->addWatermark($watermark);
+$og->addText($text);
+$og->addText($text2);
+$og->addText($text3);
+
+$og->render();
+```
 
 ## 📦 Installation
 
