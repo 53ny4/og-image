@@ -3,7 +3,7 @@
 
 ---
 
-### New version v2 is in development is located in `v2` branch [here](https://github.com/53ny4/og-image/tree/v2)
+### New version v2 is moved to `master` branch [here](https://github.com/53ny4/og-image/tree/master)
 
 ---
 
