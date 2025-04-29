@@ -100,6 +100,18 @@ class OgImageGenerator {
         return $this;
     }
 
+
+    // add image
+    /**
+     * Add an Image element.
+     */
+    public function addImage(ImageElement $img): self {
+        $img->apply($this->canvas, $this->width, $this->height, $this->palette);
+        return $this;
+    }
+
+
+
     /**
      * Add a Text element.
      */
