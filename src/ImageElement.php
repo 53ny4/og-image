@@ -16,6 +16,9 @@ class ImageElement {
     private ?int $targetWidth = null;
     private ?int $targetHeight = null;
 
+    private int $width;
+    private int $height;
+
     /**
      * Set the source image file path.
      */
@@ -78,6 +81,9 @@ class ImageElement {
         $x = $this->computeX($canvasW, $w);
         $y = $this->computeY($canvasH, $h);
 
+        $this->width  = $w;
+        $this->height = $h;
+
         // Paste or blend based on opacity
         if ($this->opacity < 100) {
             $destRes = $canvas->getGdResource();
@@ -93,5 +99,15 @@ class ImageElement {
         } else {
             $canvas->paste($img, new Point($x, $y));
         }
+    }
+
+    public function getWidth(): int
+    {
+        return $this->width;
+    }
+
+    public function getHeight(): int
+    {
+        return $this->height;
     }
 }
