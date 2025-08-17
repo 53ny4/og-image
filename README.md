@@ -104,6 +104,7 @@ composer require 53ny4/og-image
 - Add styled text to your image (font, size, color, opacity, alignment)
 - Add background overlays for text
 - Automatic text wrapping and line height adjustment
+- **Control text box width with automatic margin calculation**
 - Place elements using top/center/bottom and left/center/right positions
 - Add watermarks with position and opacity options
 - Fit and scale background images to fill the canvas
@@ -152,6 +153,34 @@ $og->render();
 // $og->render('og-image.png');
 ```
 
+### Text Box Sizing
+
+You can control the width of the text box independently from the image width, which allows you to create centered text with specific margins:
+
+```php
+// Example: 1000px image with 800px text box (100px margin on each side)
+$og = new OgImageGenerator();
+$og->createImage(1000, 630, '#f0f0f0');
+
+$text = (new TextElement())
+    ->setText('This text will be contained within an 800px wide text box, centered in the 1000px image, giving 100px margins on each side.')
+    ->setFontPath('src/assets/fonts/font.ttf')
+    ->setFontSize(32)
+    ->setFontColor('#333333')
+    ->setPosition('center', 'center')
+    ->setTextBoxWidth(800);  // Set text box width to 800px
+
+$og->addText($text);
+$og->render();
+```
+
+The `setTextBoxWidth()` method allows you to:
+- Control text wrapping within a specific width
+- Create consistent margins around your text
+- Center text blocks within larger images
+- Maintain readable line lengths regardless of image size
+
+If `setTextBoxWidth()` is not called or set to `null`, the text will use the full image width minus padding (default behavior).
 
 ## 📝 License
 
