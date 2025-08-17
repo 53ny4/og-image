@@ -18,10 +18,20 @@ class OgImageGenerator {
     private ?string $bgImagePath = null;
     private ?int $bgImageW     = null;
     private ?int $bgImageH     = null;
+    private ?string $bgColor = null;
 
     public function __construct() {
         $this->imagine = new Imagine();
         $this->palette = new RGB();
+    }
+
+    /**
+     * Set a background color for the canvas.
+     * This will be used if no background image is set, or can be used independently.
+     */
+    public function setBackgroundColor(string $color): self {
+        $this->bgColor = $color;
+        return $this;
     }
 
     /**
@@ -32,6 +42,16 @@ class OgImageGenerator {
             throw new \RuntimeException("Background image not found: {$path}");
         }
         $this->bgImagePath = $path;
+        return $this;
+    }
+
+    /**
+     * Clear the background image to use background color instead.
+     */
+    public function clearBackgroundImage(): self {
+        $this->bgImagePath = null;
+        $this->bgImageW = null;
+        $this->bgImageH = null;
         return $this;
     }
 
@@ -47,6 +67,7 @@ class OgImageGenerator {
     /**
      * Initialize the canvas with either a background color or image.
      * If a background image is set, it will be resized to cover the canvas entirely (cropping as needed).
+     * If a background color was set via setBackgroundColor(), it will be used instead of the default.
      */
     public function createImage(int $width = 1200, int $height = 630, string $backgroundColor = '#FFFFFF'): self {
         $this->width  = $width;
@@ -70,10 +91,11 @@ class OgImageGenerator {
             $cropY    = (int) round(($newH - $height) / 2);
             $this->canvas = $resized->crop(new Point($cropX, $cropY), new Box($width, $height));
         } else {
-            // Flat-color canvas
+            // Use background color set via setBackgroundColor() or fallback to parameter
+            $finalBgColor = $this->bgColor ?? $backgroundColor;
             $this->canvas = $this->imagine->create(
                 new Box($width, $height),
-                $this->palette->color($backgroundColor, 100)
+                $this->palette->color($finalBgColor, 100)
             );
         }
 

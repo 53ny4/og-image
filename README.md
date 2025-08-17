@@ -107,6 +107,7 @@ composer require 53ny4/og-image
 - Place elements using top/center/bottom and left/center/right positions
 - Add watermarks with position and opacity options
 - Fit and scale background images to fill the canvas
+- Set solid background colors as an alternative to background images
 
 ## 🧱 Usage
 
@@ -124,6 +125,9 @@ $og = new OgImageGenerator(1200, 630);
 
 // Add background image
 $og->setBackgroundImage('path/to/background.jpg');
+
+// Or use a background color instead
+// $og->setBackgroundColor('#FF5733');
 
 // Add text
 $text = (new TextElement())
@@ -152,6 +156,64 @@ $og->render();
 // $og->render('og-image.png');
 ```
 
+### Background Colors
+
+You can set a solid background color instead of using a background image:
+
+```php
+use s3ny4\OgImage\OgImageGenerator;
+use s3ny4\OgImage\TextElement;
+
+// Create generator with background color
+$og = new OgImageGenerator();
+$og->setBackgroundColor('#FF5733'); // Orange-red background
+$og->createImage(1200, 630);
+
+// Add text
+$text = (new TextElement())
+    ->setText('Hello World!')
+    ->setFontSize(48)
+    ->setFontColor('#FFFFFF')
+    ->setFontPath('path/to/font.ttf')
+    ->setPosition('center', 'center');
+
+$og->addText($text);
+$og->render();
+```
+
+#### Background Color Priority
+
+The background color can be set in two ways:
+
+1. **Using `setBackgroundColor()`** (recommended) - This takes priority over the parameter in `createImage()`
+2. **Using the `$backgroundColor` parameter in `createImage()`** - This is used as a fallback
+
+```php
+// Method 1: Using setBackgroundColor() (recommended)
+$og->setBackgroundColor('#2E8B57'); // Sea green
+$og->createImage(1200, 630); // Any color parameter here is ignored
+
+// Method 2: Using createImage parameter (fallback)
+$og->createImage(1200, 630, '#9932CC'); // Dark orchid
+
+// Method 1 overrides Method 2
+$og->setBackgroundColor('#FF0000'); // Red
+$og->createImage(1200, 630, '#00FF00'); // Green parameter is ignored, red is used
+```
+
+#### Switching Between Background Image and Color
+
+You can switch between background images and colors:
+
+```php
+// Start with a background image
+$og->setBackgroundImage('path/to/image.jpg');
+
+// Switch to background color instead
+$og->clearBackgroundImage();
+$og->setBackgroundColor('#4169E1'); // Royal blue
+$og->createImage();
+```
 
 ## 📝 License
 
