@@ -16,7 +16,7 @@
     ],
 
     "minimum-stability": "stable",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "require": {
         "php": "^8.2",
         "imagine/imagine": "^1.5"
