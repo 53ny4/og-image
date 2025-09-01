@@ -11,12 +11,17 @@ class TextElement {
     use PositionableTrait;
 
     private string $text;
-    private string $fontPath = 'src/assets/fonts/BebasNeue-Regular.ttf';
+    private string $fontPath;
     private int $fontSize = 36;
     private string $fontColor = '#ffffff';
     private ?string $bgColor = null;
     private int $bgOpacity = 100;   // 0 = transparent, 100 = opaque
     private int $lineHeight = 48;     // custom line height in px; 0 = auto
+    private ?int $textBoxWidth = null;  // custom text box width in px; null = use image width
+
+    public function __construct() {
+        $this->fontPath = __DIR__ . '/assets/fonts/BebasNeue-Regular.ttf';
+    }
 
     public function setText(string $text): self {
         $this->text = $text;
