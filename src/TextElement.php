@@ -11,7 +11,7 @@ class TextElement {
     use PositionableTrait;
 
     private string $text;
-    private string $fontPath = 'path/to/font.ttf';
+    private string $fontPath = 'src/assets/fonts/BebasNeue-Regular.ttf';
     private int $fontSize = 36;
     private string $fontColor = '#ffffff';
     private ?string $bgColor = null;
