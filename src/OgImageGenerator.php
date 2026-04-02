@@ -121,6 +121,27 @@ class OgImageGenerator {
     }
 
     /**
+     * Draw a filled rectangle directly on the canvas.
+     *
+     * @param int    $x        Top-left X
+     * @param int    $y        Top-left Y
+     * @param int    $width    Rectangle width
+     * @param int    $height   Rectangle height
+     * @param string $color    Hex color string
+     * @param int    $opacity  0 (transparent) to 100 (opaque)
+     */
+    public function drawRect(int $x, int $y, int $width, int $height, string $color, int $opacity = 100): self {
+        $opacity = max(0, min(100, $opacity));
+        $c = $this->palette->color($color, $opacity);
+        $this->canvas->draw()->rectangle(
+            new Point($x, $y),
+            new Point($x + $width - 1, $y + $height - 1),
+            $c, $c
+        );
+        return $this;
+    }
+
+    /**
      * Render to browser or save to disk.
      */
     public function render(string $outputPath = null): self {
